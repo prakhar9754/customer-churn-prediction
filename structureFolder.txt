@@ -1,0 +1,29 @@
+customer-segmentation-retention
+│
+├── data
+│   ├── raw
+│   ├── processed
+│
+├── notebooks
+│   01_problem_framing.ipynb
+│   02_data_understanding_eda.ipynb
+│   03_data_cleaning_feature_engineering.ipynb
+│   04_customer_segmentation.ipynb
+│   05_churn_modeling.ipynb
+│   06_model_evaluation_explainability.ipynb
+│
+├── src
+│   data_processing.py
+│   feature_engineering.py
+│   train_model.py
+│   predict.py
+│
+├── models
+│   churn_model.pkl
+│   segmentation_model.pkl
+│
+├── app
+│   app.py  (FastAPI or Flask)
+│
+├── requirements.txt
+├── README.md
