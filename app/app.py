@@ -27,14 +27,19 @@ with col1:
 with col2:
     total_charges = st.number_input("Total Charges", 0.0)
     contract = st.selectbox("Contract Type", ["Month-to-month", "One year", "Two year"])
-    if st.button("🔍 Predict Churn"):
-        result = predict_churn(tenure, monthly_charges, total_charges, contract)
+    if st.button("Predict Churn"):
+        result = predict_churn(
+            tenure,
+            monthly_charges,
+            total_charges,
+            contract
+        )
 
-    if result == 1:
-        st.error("⚠️ This customer is likely to churn.")
-    else:
-        st.success("✅ This customer is likely to stay.")
-        st.sidebar.header("About")
+        if result == 1:
+            st.error("⚠️ Customer is likely to churn")
+        else:
+            st.success("✅ Customer is likely to stay")
+    
 
 st.sidebar.info(
 """

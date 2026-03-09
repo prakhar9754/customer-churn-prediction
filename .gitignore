@@ -2,9 +2,7 @@
 dataset/
 data/
 
-# Ignore models
-models/
-*.pkl
+
 
 # Ignore zip files
 *.zip
