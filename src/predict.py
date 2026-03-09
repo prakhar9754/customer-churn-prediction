@@ -2,7 +2,17 @@ import pickle
 import numpy as np
 
 # Load model
-model = pickle.load(open("models/churn_model.pkl", "rb"))
+import pickle
+import os
+
+# Get project root directory
+BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+
+# Build model path
+model_path = os.path.join(BASE_DIR, "models", "churn_model.pkl")
+
+# Load model
+model = pickle.load(open(model_path, "rb"))
 scaler = pickle.load(open("models/scaler.pkl", "rb"))
 
 
