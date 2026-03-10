@@ -57,14 +57,14 @@ with col2:
 
 # Prediction button
 if st.button("🔍 Predict Churn"):
-
-    result = predict_churn(
+    result,probability = predict_churn(
         recency,
         frequency,
         monetary,
         avg_order_value,
         avg_review_score
     )
+    st.write(f"Churn Probability: {probability:.2f}")
 
     if result == 1:
         st.error("⚠️ This customer is likely to churn.")
