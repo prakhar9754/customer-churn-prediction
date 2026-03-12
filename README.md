@@ -7,7 +7,7 @@ This project analyzes customer behavior and predicts churn risk using machine le
 - Customer segmentation using RFM and KMeans
 - Churn prediction using Random Forest
 - Model explainability
-- Interactive Streamlit web app
+- Interactive flask web app
 
 ## Run the application
 
