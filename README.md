@@ -16,5 +16,4 @@ Install dependencies:
 pip install -r requirements.txt
 
 Run the app:
-
-streamlit run app/app.py
+https://customer-churn-prediction-app-kjhs.onrender.com/
