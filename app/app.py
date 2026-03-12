@@ -1,88 +1,36 @@
-import sys
-import os
+from flask import Flask, render_template, request
+from src.predict import predict_churn
 
-# Allow importing from src folder
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "..")))
+app = Flask(__name__)
 
-import streamlit as st
-from src.predict import predict_churn  # type: ignore
+@app.route("/", methods=["GET","POST"])
+def home():
 
-# Page configuration
-st.set_page_config(
-    page_title="Customer Churn Prediction",
-    page_icon="📊",
-    layout="centered"
-)
+    prediction = None
+    probability = None
 
-# Title
-st.title("📊 Customer Churn Prediction App")
+    if request.method == "POST":
 
-st.markdown("""
-This app predicts whether a customer is likely to **churn** based on their purchasing behavior.
+        recency = float(request.form["recency"])
+        frequency = float(request.form["frequency"])
+        monetary = float(request.form["monetary"])
+        avg_order_value = float(request.form["avg_order_value"])
+        avg_review_score = float(request.form["avg_review_score"])
 
-Enter the customer metrics below and click **Predict Churn**.
-""")
+        prediction, probability = predict_churn(
+            recency,
+            frequency,
+            monetary,
+            avg_order_value,
+            avg_review_score
+        )
 
-# Layout columns
-col1, col2 = st.columns(2)
-
-with col1:
-    recency = st.number_input(
-        "Recency (Days since last purchase)",
-        min_value=0
+    return render_template(
+        "index.html",
+        prediction=prediction,
+        probability=probability
     )
 
-    frequency = st.number_input(
-        "Number of Orders",
-        min_value=0
-    )
 
-    monetary = st.number_input(
-        "Total Spend",
-        min_value=0.0
-    )
-
-with col2:
-    avg_order_value = st.number_input(
-        "Average Order Value",
-        min_value=0.0
-    )
-
-    avg_review_score = st.slider(
-        "Average Review Score",
-        min_value=1.0,
-        max_value=5.0,
-        value=4.0
-    )
-
-# Prediction button
-if st.button("🔍 Predict Churn"):
-    result,probability = predict_churn(
-        recency,
-        frequency,
-        monetary,
-        avg_order_value,
-        avg_review_score
-    )
-    st.write(f"Churn Probability: {probability:.2f}")
-
-    if result == 1:
-        st.error("⚠️ This customer is likely to churn.")
-    else:
-        st.success("✅ This customer is likely to stay.")
-
-# Sidebar
-st.sidebar.info(
-"""
-### About This Project
-
-This project uses **Machine Learning** to predict customer churn.
-
-**Model:** Random Forest  
-**Features:** RFM + Behavioral Metrics  
-**Built with:**  
-- Python  
-- Scikit-learn  
-- Streamlit
-"""
-)
+if __name__ == "__main__":
+    app.run(debug=True)
