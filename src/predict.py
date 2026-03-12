@@ -2,35 +2,33 @@ import pickle
 import numpy as np
 import os
 
-# Project root directory
+# ============================================
+# Load Model
+# ============================================
+
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# Model paths
 model_path = os.path.join(BASE_DIR, "models", "churn_model.pkl")
-scaler_path = os.path.join(BASE_DIR, "models", "scaler.pkl")
 
-# Load model and scaler
 model = pickle.load(open(model_path, "rb"))
-scaler = pickle.load(open(scaler_path, "rb"))
 
+
+# ============================================
+# Prediction Function
+# ============================================
 
 def predict_churn(recency, frequency, monetary, avg_order_value, avg_review_score):
 
-    features = np.array([[recency, frequency, monetary,
-                          avg_order_value, avg_review_score]])
+    features = np.array([[
+        recency,
+        frequency,
+        monetary,
+        avg_order_value,
+        avg_review_score
+    ]])
 
-    # Scale features
-    features_scaled = scaler.transform(features)
+    prediction = model.predict(features)[0]
 
-    # Get probability
-    probability = model.predict_proba(features_scaled)[0][1]
-
-    # Custom threshold
-    threshold = 0.30
-
-    if probability > threshold:
-        prediction = 1
-    else:
-        prediction = 0
+    probability = model.predict_proba(features)[0][1]
 
     return prediction, probability
